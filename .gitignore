@@ -1,0 +1,17 @@
+# Ignore the documentation
+README.md
+
+# Ignore Python's temporary cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore ML model metadata (if using CatBoost)
+catboost_info/
+
+# Ignore OS-specific system files
+.DS_Store
+Thumbs.db
+
+# Ignore your Excel data if you don't want it on the cloud (optional)
+# data/*.xlsx
