@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier # Change this if CatBoost was your winner
 from sklearn.metrics import log_loss, classification_report, confusion_matrix, accuracy_score
 
@@ -26,9 +27,10 @@ features = [
 ]
 target = 'Total_Label_Score'
 
-# 800/200 Split
-X_train, y_train = df[features].iloc[:800], df[target].iloc[:800]
-X_test, y_test = df[features].iloc[800:1000], df[target].iloc[800:1000]
+# 80/20 Split
+X = df[features]
+y = df[target]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # 3. Train the Champion (Random Forest)
 model = RandomForestClassifier(n_estimators=200, random_state=42)
@@ -57,7 +59,7 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='YlGnBu',
 plt.title('Confusion Matrix: Predicted vs Actual')
 plt.xlabel('Predicted Score')
 plt.ylabel('True Score')
-plt.show()
+plt.savefig('confusion_matrix.png', dpi=300)
 
 # B. Feature Importance
 importances = pd.Series(model.feature_importances_, index=features).sort_values(ascending=False)
@@ -66,4 +68,4 @@ importances.plot(kind='bar', color='teal')
 plt.title('Feature Importance: Which Ratios Matter Most?')
 plt.ylabel('Importance')
 plt.tight_layout()
-plt.show()
+plt.savefig('feature_importance.png', dpi=300)

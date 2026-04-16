@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from xgboost import XGBClassifier
@@ -28,11 +29,10 @@ features = [
 ]
 target = 'Total_Label_Score'
 
-# 4. 800/200 Split
-X_train = df[features].iloc[:800]
-y_train = df[target].iloc[:800]
-X_test = df[features].iloc[800:1000]
-y_test = df[target].iloc[800:1000]
+# 4. 80/20 Split
+X = df[features]
+y = df[target]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # 5. Initialize Models
 models = {
@@ -49,12 +49,14 @@ models = {
 }
 
 # 6. Run Comparison
-print("\n" + "="*40)
-print(f"{'Model':<20} | {'Accuracy':<10}")
-print("-" * 40)
+print("\n" + "="*55)
+print(f"{'Model':<20} | {'Train Accuracy':<15} | {'Test Accuracy':<15}")
+print("-" * 55)
 
 for name, model in models.items():
     model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    print(f"{name:<20} | {acc:.4f}")
+    y_pred_train = model.predict(X_train)
+    y_pred_test = model.predict(X_test)
+    train_acc = accuracy_score(y_train, y_pred_train)
+    test_acc = accuracy_score(y_test, y_pred_test)
+    print(f"{name:<20} | {train_acc:.4f}          | {test_acc:.4f}")
