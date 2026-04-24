@@ -1,17 +1,22 @@
-# Ignore the documentation
-README.md
-
-# Ignore Python's temporary cache files
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Ignore ML model metadata (if using CatBoost)
-catboost_info/
+# Virtualenv
+.venv/
 
-# Ignore OS-specific system files
+# ML artifacts (not committed)
+catboost_info/
+models/
+outputs/
+*.keras
+*.joblib
+*.pt
+
+# OS-specific system files
 .DS_Store
 Thumbs.db
 
-# Ignore your Excel data if you don't want it on the cloud (optional)
+# Optional: ignore Excel data
 # data/*.xlsx
